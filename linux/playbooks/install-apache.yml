@@ -1,0 +1,17 @@
+---
+- name: Install and Start Apache
+  hosts: web
+  serial: 1
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Ensure Apache is installed
+      ansible.builtin.yum:
+        name: httpd
+        state: latest
+
+    - name: Ensure Apache is started
+      service:
+        name: httpd
+        state: started
+        enabled: yes

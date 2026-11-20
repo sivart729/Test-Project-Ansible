@@ -1,0 +1,33 @@
+---
+- name: Get Packages Available for yum Upgrades
+  hosts: all
+  become: true
+  vars:
+    security_only: "no"
+  tasks:
+    - name: "Get all packages available for yum upgrades"
+      ansible.builtin.yum:
+        list: upgrades
+        state: latest
+        update_cache: yes
+      register: result_yum_list_upgrades
+      when: security_only == "no"
+
+    - name: "Print the result of yum list upgrades - all"
+      ansible.builtin.debug:
+        msg: "{{ result_yum_list_upgrades }}"
+      when: security_only == "no"
+
+    - name: "Get packages that can be patched with security fixes"
+      ansible.builtin.yum:
+        security: yes
+        list: updates
+        state: latest
+        update_cache: yes
+      register: result_yum_list_upgrades_security
+      when: security_only == "yes"
+
+    - name: "Print the result of yum list upgrades - security only"
+      ansible.builtin.debug:
+        msg: "{{ result_yum_list_upgrades_security }}"
+      when: security_only == "yes"

@@ -1,0 +1,37 @@
+---
+- name: Perform a Yum Update of all Packages to Latest
+  hosts: all
+  become: true
+  vars:
+    packages: "*"
+    state: "latest"
+    enablerepo: "dev"
+    exclude: "kernel*,foo*"
+  tasks:
+    - name: Update the system via yum
+      ansible.builtin.yum:
+        name: "{{ packages }}"
+        state: "{{ state }}"
+        # enablerepo: {{ enablerepo }}
+        # exclude: "{{ exclude }}"
+
+    - name: Reboot the system
+      ansible.builtin.shell: "sleep 5 && reboot"
+      async: 1
+      poll: 0
+
+    - name: Wait for 10 seconds
+      pause:
+        seconds: 10
+
+    - name: Wait for the system to come up from reboot
+      wait_for_connection:
+        connect_timeout: 20
+        sleep: 5
+        delay: 5
+        timeout: 60
+
+    # - name: Install epel-release
+    #   ansible.builtin.yum:
+    #     name: epel-release
+    #     state: latest

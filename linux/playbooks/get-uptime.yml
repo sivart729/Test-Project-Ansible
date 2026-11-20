@@ -1,0 +1,14 @@
+---
+- name: Get uptime
+  hosts: all
+  gather_facts: false
+  vars:
+    cmd: "uptime"
+  tasks:
+    - name: "Run {{ cmd }}"
+      ansible.builtin.command: "{{ cmd }}"
+      register: result
+      changed_when: false
+    - name: Print results
+      ansible.builtin.debug:
+        var: result.stdout_lines

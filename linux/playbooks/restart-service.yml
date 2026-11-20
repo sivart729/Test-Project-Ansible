@@ -1,0 +1,20 @@
+---
+- name: Restart httpd service
+  hosts: all
+  vars:
+    linux_svc: "httpd"
+  tasks:
+    - name: Get httpd status
+      command: "systemctl status {{ linux_svc }}"
+      register: result
+    - debug: var=result.stdout_lines
+
+    - name: Ensure httpd is restarted
+      service:
+        name: "{{ linux_svc }}"
+        state: restarted
+
+    - name: Get httpd status
+      command: "systemctl status {{ linux_svc }}"
+      register: result
+    - debug: var=result.stdout_lines

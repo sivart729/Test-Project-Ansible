@@ -1,0 +1,16 @@
+---
+- name: Touch a file
+  hosts: all
+  gather_facts: false
+  vars:
+    myfile: "/tmp/myapp.conf"
+  tasks:
+    - name: Ensure myfile exists
+      file:
+        path: "{{ myfile }}"
+        state: touch
+
+    - name: Ensure myfile permissions are set
+      file:
+        name: "{{ myfile }}"
+        mode: 0755
