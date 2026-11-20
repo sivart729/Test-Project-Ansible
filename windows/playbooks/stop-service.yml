@@ -1,5 +1,5 @@
 ---
-- name: Start a service and get disk size
+- name: Stop a service and get disk size
   hosts: all
   collections:
     - community.windows
@@ -8,11 +8,11 @@
   vars:
     service: "spooler"
   tasks:
-  - name: "Start {{ service }} service"
+  - name: "Stop {{ service }} service"
     win_service:
       name: "{{ service }}"
       start_mode: auto
-      state: started
+      state: stopped
 
   - name: Get all disk facts
     community.windows.win_disk_facts:
