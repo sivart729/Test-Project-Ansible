@@ -1,0 +1,13 @@
+---
+- name: Add a user
+  hosts: all
+  gather_facts: false
+  vars:
+    username: "sam"
+    password: "Changeme123"
+  tasks:
+    - name: "Add user {{ username }}"
+      win_user:
+        name: "{{ username }}"
+        password: "{{ password }}"
+        state: present
