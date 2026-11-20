@@ -1,0 +1,13 @@
+---
+- name: Install Windows Feature
+  gather_facts: no
+  hosts: all
+  collections:
+    - ansible.windows
+  vars:
+    windows_feature: "Web-Server"
+  tasks:
+  - name: "Install {{ windows_feature }}"
+    ansible.windows.win_feature:
+      name: "{{ windows_feature }}"
+      state: present
